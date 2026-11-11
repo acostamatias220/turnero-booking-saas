@@ -6,5 +6,6 @@ parameters:
     paths:
         - app
         - database/factories
+        - database/seeders
         - routes
     treatPhpDocTypesAsCertain: false
