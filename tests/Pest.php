@@ -1,47 +1,75 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Test Case
-|--------------------------------------------------------------------------
-|
-| The closure you provide to your test functions is always bound to a specific PHPUnit test
-| case class. By default, that class is "PHPUnit\Framework\TestCase". Of course, you may
-| need to change it using the "pest()" function to bind a different classes or traits.
-|
-*/
+declare(strict_types=1);
 
-pest()->extend(Tests\TestCase::class)
-    ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+use App\Enums\Role;
+use App\Models\Business;
+use App\Models\Service;
+use App\Models\User;
+use App\Models\WorkingHour;
+use App\Tenancy\TenantContext;
+use Carbon\CarbonImmutable;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
+
+pest()->extend(TestCase::class)
+    ->use(RefreshDatabase::class)
     ->in('Feature');
 
-/*
-|--------------------------------------------------------------------------
-| Expectations
-|--------------------------------------------------------------------------
-|
-| When you're writing tests, you often need to check that values meet certain conditions. The
-| "expect()" function gives you access to a set of "expectations" methods that you can use
-| to assert different things. Of course, you may extend the Expectation API at any time.
-|
-*/
+pest()->extend(TestCase::class)->in('Unit');
 
-expect()->extend('toBeOne', function () {
-    return $this->toBe(1);
-});
+pest()->extend(TestCase::class)
+    ->use(DatabaseTruncation::class)
+    ->group('concurrency')
+    ->in('Concurrency');
 
 /*
-|--------------------------------------------------------------------------
-| Functions
-|--------------------------------------------------------------------------
-|
-| While Pest is very powerful out-of-the-box, you may have some testing code specific to your
-| project that you don't want to repeat in every file. Here you can also expose helpers as
-| global functions to help you to reduce the number of lines of code in your test files.
-|
+| Helpers shared by the feature tests.
 */
 
-function something()
+/**
+ * A ready-to-book business: one owner/professional working Mon–Fri 09:00–13:00 and
+ * 14:00–18:00 (lunch break) and one 30-minute service.
+ *
+ * @return array{business: Business, owner: User, service: Service}
+ */
+function bookableBusiness(array $businessAttributes = [], array $serviceAttributes = []): array
 {
-    // ..
+    $business = Business::factory()->create($businessAttributes);
+    $owner = User::factory()->forBusiness($business)->create(['role' => Role::Owner, 'name' => 'Ana Dueña']);
+
+    app(TenantContext::class)->run($business, function () use ($owner) {
+        foreach (range(1, 5) as $weekday) {
+            WorkingHour::factory()->create(['user_id' => $owner->id, 'weekday' => $weekday, 'starts_at' => '09:00', 'ends_at' => '13:00']);
+            WorkingHour::factory()->create(['user_id' => $owner->id, 'weekday' => $weekday, 'starts_at' => '14:00', 'ends_at' => '18:00']);
+        }
+    });
+
+    $service = Service::factory()->create(['business_id' => $business->id, 'name' => 'Corte', ...$serviceAttributes]);
+    $service->staff()->attach($owner);
+
+    return ['business' => $business, 'owner' => $owner, 'service' => $service];
+}
+
+/** Add a professional with the same schedule who also performs the service. */
+function addProfessional(Business $business, Service $service, string $name = 'Bruno Profesional'): User
+{
+    $staff = User::factory()->forBusiness($business)->staff()->create(['name' => $name]);
+
+    app(TenantContext::class)->run($business, function () use ($staff) {
+        foreach (range(1, 5) as $weekday) {
+            WorkingHour::factory()->create(['user_id' => $staff->id, 'weekday' => $weekday, 'starts_at' => '09:00', 'ends_at' => '18:00']);
+        }
+    });
+
+    $service->staff()->attach($staff);
+
+    return $staff;
+}
+
+/** A local wall-clock time in Buenos Aires on the next Monday, as a UTC instant. */
+function nextMondayAt(string $time, string $tz = 'America/Argentina/Buenos_Aires'): CarbonImmutable
+{
+    return CarbonImmutable::parse("next monday {$time}", $tz)->utc();
 }
