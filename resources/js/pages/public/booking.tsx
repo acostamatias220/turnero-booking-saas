@@ -108,7 +108,7 @@ export default function Booking({ business, services, staff }: Props) {
             </ol>
 
             <div className="grid gap-8 lg:grid-cols-[1fr_300px]">
-                <section>
+                <section className="min-w-0">
                     {step > 0 && (
                         <button
                             type="button"

@@ -63,7 +63,7 @@ final class DemoBusinessSeeder extends Seeder
                 ['name' => 'Color / mechas', 'description' => 'Consultá antes por el tono.', 'minutes' => 90, 'buffer' => 15, 'price' => 35_000],
             ],
             [
-                ['name' => 'Cayetano "Tano" Russo', 'email' => 'tano@turnero.test', 'title' => 'Barbero y dueño', 'owner' => true, 'services' => ['Corte clásico', 'Corte + barba', 'Arreglo de barba'], 'hours' => [2 => [['10:00', '14:00'], ['15:00', '20:00']], 3 => [['10:00', '14:00'], ['15:00', '20:00']], 4 => [['10:00', '14:00'], ['15:00', '20:00']], 5 => [['10:00', '14:00'], ['15:00', '20:00']], 6 => [['09:00', '15:00']]]],
+                ['name' => 'Cayetano Russo', 'email' => 'tano@turnero.test', 'title' => 'Barbero y dueño', 'owner' => true, 'services' => ['Corte clásico', 'Corte + barba', 'Arreglo de barba'], 'hours' => [2 => [['10:00', '14:00'], ['15:00', '20:00']], 3 => [['10:00', '14:00'], ['15:00', '20:00']], 4 => [['10:00', '14:00'], ['15:00', '20:00']], 5 => [['10:00', '14:00'], ['15:00', '20:00']], 6 => [['09:00', '15:00']]]],
                 ['name' => 'Bruno Ledesma', 'email' => 'bruno@turnero.test', 'title' => 'Barbero', 'services' => ['Corte clásico', 'Corte + barba', 'Arreglo de barba', 'Color / mechas'], 'hours' => [1 => [['12:00', '20:00']], 2 => [['12:00', '20:00']], 3 => [['12:00', '20:00']], 5 => [['12:00', '20:00']], 6 => [['09:00', '17:00']]]],
                 ['name' => 'Juli Paz', 'email' => 'juli@turnero.test', 'title' => 'Colorista', 'services' => ['Corte clásico', 'Color / mechas'], 'hours' => [3 => [['11:00', '19:00']], 4 => [['11:00', '19:00']], 5 => [['11:00', '19:00']], 6 => [['10:00', '16:00']]]],
             ],

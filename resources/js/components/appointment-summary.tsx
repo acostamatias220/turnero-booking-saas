@@ -1,3 +1,4 @@
+import { formatLongDate } from '@/lib/format';
 import type { Appointment } from '@/types';
 import { CalendarDays, Clock, Hash, Sparkles, UserRound, Wallet } from 'lucide-react';
 
@@ -5,7 +6,7 @@ export function AppointmentSummary({ appointment }: { appointment: Appointment }
     const rows = [
         { icon: Sparkles, label: 'Servicio', value: appointment.service?.name },
         { icon: UserRound, label: 'Profesional', value: appointment.staff?.name },
-        { icon: CalendarDays, label: 'Fecha', value: appointment.local_date },
+        { icon: CalendarDays, label: 'Fecha', value: formatLongDate(appointment.local_date) },
         { icon: Clock, label: 'Horario', value: `${appointment.local_start} a ${appointment.local_end} hs` },
         {
             icon: Wallet,
