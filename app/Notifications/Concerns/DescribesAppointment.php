@@ -13,7 +13,7 @@ trait DescribesAppointment
 {
     protected function details(MailMessage $mail, Appointment $appointment): MailMessage
     {
-        $start = $appointment->localStart()->locale('es');
+        $start = $appointment->localStart()->settings(['locale' => 'es']);
 
         return $mail
             ->line("**Servicio:** {$appointment->service->name}")

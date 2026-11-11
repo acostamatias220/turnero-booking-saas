@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property int $id
  * @property int $business_id
+ * @property-read Business $business
  * @property string $name
  * @property string|null $description
  * @property int $duration_minutes

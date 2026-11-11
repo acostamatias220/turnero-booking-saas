@@ -29,4 +29,13 @@ final class SetTenantFromUser
 
         return $next($request);
     }
+
+    /**
+     * Clear the tenant once the response is sent, so nothing that runs afterwards in
+     * the same process (Octane, tests, terminable middleware) inherits it by accident.
+     */
+    public function terminate(Request $request, Response $response): void
+    {
+        $this->tenant->set(null);
+    }
 }

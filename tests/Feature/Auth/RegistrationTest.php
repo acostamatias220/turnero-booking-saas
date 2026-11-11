@@ -1,31 +1,50 @@
 <?php
 
-namespace Tests\Feature\Auth;
+declare(strict_types=1);
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Tests\TestCase;
+use App\Enums\Role;
+use App\Models\Business;
+use App\Models\User;
+use App\Models\WorkingHour;
+use App\Tenancy\TenantContext;
 
-class RegistrationTest extends TestCase
-{
-    use RefreshDatabase;
+test('registration screen can be rendered', function () {
+    $this->get('/register')->assertOk();
+});
 
-    public function test_registration_screen_can_be_rendered()
-    {
-        $response = $this->get('/register');
+test('signing up creates the business, its owner and a default schedule', function () {
+    $response = $this->post('/register', [
+        'business_name' => 'Barbería Don Pepe',
+        'category' => 'barbershop',
+        'name' => 'Pepe Argento',
+        'email' => 'pepe@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
 
-        $response->assertStatus(200);
-    }
+    $this->assertAuthenticated();
+    $response->assertRedirect(route('dashboard', absolute: false));
 
-    public function test_new_users_can_register()
-    {
-        $response = $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
-        ]);
+    $business = Business::query()->where('slug', 'barberia-don-pepe')->firstOrFail();
+    $user = User::query()->where('email', 'pepe@example.com')->firstOrFail();
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
-    }
-}
+    expect($user->business_id)->toBe($business->id)
+        ->and($user->role)->toBe(Role::Owner);
+
+    app(TenantContext::class)->run($business, fn () => expect(WorkingHour::query()->count())->toBe(5));
+});
+
+test('slugs are unique across businesses', function () {
+    Business::factory()->create(['slug' => 'estudio-luz']);
+
+    $this->post('/register', [
+        'business_name' => 'Estudio Luz',
+        'category' => 'fitness',
+        'name' => 'Lucía',
+        'email' => 'lucia@example.com',
+        'password' => 'password',
+        'password_confirmation' => 'password',
+    ]);
+
+    expect(Business::query()->where('slug', 'estudio-luz-2')->exists())->toBeTrue();
+});

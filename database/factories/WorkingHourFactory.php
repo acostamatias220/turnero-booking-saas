@@ -17,7 +17,7 @@ class WorkingHourFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'business_id' => fn (array $attributes) => User::query()->findOrFail($attributes['user_id'])->business_id,
+            'business_id' => fn (array $attributes) => User::query()->findOrFail((int) $attributes['user_id'])->business_id,
             'weekday' => 1,
             'starts_at' => '09:00',
             'ends_at' => '18:00',

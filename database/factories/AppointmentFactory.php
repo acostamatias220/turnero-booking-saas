@@ -25,7 +25,7 @@ class AppointmentFactory extends Factory
 
         return [
             'staff_id' => User::factory(),
-            'business_id' => fn (array $a) => User::query()->findOrFail($a['staff_id'])->business_id,
+            'business_id' => fn (array $a) => User::query()->findOrFail((int) $a['staff_id'])->business_id,
             'service_id' => fn (array $a) => Service::factory()->state(['business_id' => $a['business_id']]),
             'customer_id' => fn (array $a) => Customer::factory()->state(['business_id' => $a['business_id']]),
             'status' => AppointmentStatus::Confirmed,

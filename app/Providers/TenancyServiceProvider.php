@@ -38,7 +38,7 @@ class TenancyServiceProvider extends ServiceProvider
             $tenantId = $event->job->payload()['tenant_id'] ?? null;
 
             $this->app->make(TenantContext::class)->push(
-                $tenantId === null ? null : Business::query()->find($tenantId),
+                is_int($tenantId) ? Business::query()->find($tenantId) : null,
             );
         });
 

@@ -17,7 +17,7 @@ final readonly class IntervalSet
      */
     public function __construct(iterable $intervals = [])
     {
-        $this->intervals = self::normalize([...$intervals]);
+        $this->intervals = self::normalize(array_values([...$intervals]));
     }
 
     public function isEmpty(): bool

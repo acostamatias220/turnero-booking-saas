@@ -71,7 +71,11 @@ class Appointment extends Model
         ];
     }
 
-    /** ULIDs live in `public_id`; the integer PK stays internal. */
+    /**
+     * ULIDs live in `public_id`; the integer PK stays internal.
+     *
+     * @return list<string>
+     */
     public function uniqueIds(): array
     {
         return ['public_id'];

@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * @property int $id
  * @property int $business_id
+ * @property-read Business $business
  * @property int|null $user_id
  * @property CarbonImmutable $starts_at
  * @property CarbonImmutable $ends_at

@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property PaymentStatus $status
  * @property CarbonImmutable|null $paid_at
  * @property-read Appointment $appointment
+ * @property-read Business $business
  */
 class Payment extends Model
 {

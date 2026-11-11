@@ -22,13 +22,24 @@ final class SetTenantFromSlug
         $route = $request->route();
         $param = $route?->parameter('business');
 
-        $business = $param instanceof Business
-            ? $param
-            : Business::query()->where('slug', (string) $param)->firstOrFail();
+        $business = match (true) {
+            $param instanceof Business => $param,
+            is_string($param) => Business::query()->where('slug', $param)->firstOrFail(),
+            default => abort(404),
+        };
 
         $route?->setParameter('business', $business);
         $this->tenant->set($business);
 
         return $next($request);
+    }
+
+    /**
+     * Clear the tenant once the response is sent, so nothing that runs afterwards in
+     * the same process (Octane, tests, terminable middleware) inherits it by accident.
+     */
+    public function terminate(Request $request, Response $response): void
+    {
+        $this->tenant->set(null);
     }
 }

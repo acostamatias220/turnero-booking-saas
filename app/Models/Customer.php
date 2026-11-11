@@ -17,6 +17,7 @@ use Illuminate\Notifications\Notifiable;
  *
  * @property int $id
  * @property int $business_id
+ * @property-read Business $business
  * @property string $name
  * @property string $email
  * @property string|null $phone

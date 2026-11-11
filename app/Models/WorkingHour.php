@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property int $business_id
+ * @property-read Business $business
  * @property int $user_id
  * @property int $weekday
  * @property string $starts_at

@@ -21,7 +21,7 @@ class BusinessFactory extends Factory
             'name' => $name,
             'slug' => Str::slug($name).'-'.Str::lower(Str::random(4)),
             'category' => 'barbershop',
-            'tagline' => fake()->catchPhrase(),
+            'tagline' => fake()->sentence(5),
             'phone' => fake()->phoneNumber(),
             'address' => fake()->streetAddress().', CABA',
             'timezone' => 'America/Argentina/Buenos_Aires',

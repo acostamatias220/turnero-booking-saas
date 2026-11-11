@@ -140,7 +140,7 @@ final class BookingService
     {
         $day = $startsAt->setTimezone($business->timezone)->startOfDay();
 
-        return $business->staff()
+        $sorted = $business->staff()
             ->whereKey($staffIds)
             ->withCount(['appointments as day_load' => fn ($q) => $q
                 ->occupying()
@@ -149,6 +149,8 @@ final class BookingService
             ->sortBy([['day_load', 'asc'], ['id', 'asc']])
             ->values()
             ->all();
+
+        return array_values($sorted);
     }
 
     private function releaseExpiredHolds(User $staff, CarbonImmutable $now): void

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property int $business_id
+ * @property-read Business $business
  * @property CarbonImmutable $date
  * @property string $name
  */
