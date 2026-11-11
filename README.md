@@ -7,6 +7,7 @@
 ![Inertia](https://img.shields.io/badge/inertia-2-9553E9)
 ![MySQL](https://img.shields.io/badge/mysql-8.4-4479A1?logo=mysql&logoColor=white)
 ![Pest](https://img.shields.io/badge/tests-Pest%204-F28D1A)
+![Coverage](https://img.shields.io/badge/coverage-95.8%25-brightgreen)
 ![PHPStan](https://img.shields.io/badge/larastan-level%208-2A5EA7)
 ![License](https://img.shields.io/badge/license-MIT-green)
 
@@ -238,7 +239,7 @@ vendor/bin/pint --test
 npx tsc --noEmit && npm run lint && npm run build
 ```
 
-- **200+ tests de Pest** contra **MySQL real** (no SQLite: los locks y los `UNIQUE` son parte del diseño).
+- **200 tests de Pest (~96 % de cobertura de líneas)** contra **MySQL real** (no SQLite: los locks y los `UNIQUE` son parte del diseño).
 - Casos destacados: aislamiento entre negocios (lecturas, escrituras, jobs encolados y binding de rutas), DST, buffers y cortes, retención vencida + pago tardío, firma inválida / vencida / reenviada, idempotencia del webhook, link de cancelación vencido, recordatorios sin duplicar, abilities de tokens y **doble reserva concurrente con 8 procesos**.
 - CI corre Pint, Larastan, Pest en PHP 8.3 y 8.4 con MySQL 8.4 (cobertura con pcov) y el build del frontend.
 

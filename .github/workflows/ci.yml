@@ -94,7 +94,7 @@ jobs:
 
       - name: Run tests with coverage
         if: matrix.php == '8.4'
-        run: php artisan test --compact --coverage --min=80 | tee coverage.txt
+        run: php artisan test --compact --coverage --min=90 | tee coverage.txt
 
       - name: Coverage summary
         if: always() && matrix.php == '8.4'
