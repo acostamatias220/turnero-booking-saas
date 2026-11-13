@@ -19,7 +19,7 @@
 
 ---
 
-## ✨ Funcionalidades
+##  Funcionalidades
 
 **Para el cliente final** (sin crear cuenta)
 
@@ -39,7 +39,7 @@
 - **Reglas de reserva**: zona horaria, intervalo de la grilla, anticipación mínima, horizonte, política de cancelación, % de seña, minutos de retención y color de marca.
 - **API REST v1** con tokens Sanctum (con _abilities_) para integrar con otros sistemas.
 
-## 🧱 Stack
+##  Stack
 
 | Capa          | Tecnologías                                                                                                      |
 | ------------- | ---------------------------------------------------------------------------------------------------------------- |
@@ -49,7 +49,7 @@
 | Calidad       | Pest 4 (unit, feature y **concurrencia multi-proceso**), Larastan nivel 8, Pint (`declare(strict_types=1)`), ESLint, Prettier |
 | DevOps        | Dockerfile multi-stage (Nginx + PHP-FPM), docker compose (app, worker, scheduler, MySQL, Mailpit), GitHub Actions |
 
-## 🏗️ Arquitectura
+##  Arquitectura
 
 ```mermaid
 flowchart LR
@@ -115,7 +115,7 @@ sequenceDiagram
     Note over T,W: Si el pago llega tarde (retención vencida) se re-reserva el horario<br/>o, si ya lo tomó otra persona, la seña queda marcada para reintegro.
 ```
 
-## 🧠 Decisiones técnicas
+##  Decisiones técnicas
 
 <details open>
 <summary><b>1. Aislamiento multi-tenant "fail-closed"</b></summary>
@@ -164,7 +164,7 @@ MySQL no tiene _exclusion constraints_ como PostgreSQL, así que la defensa tien
 - `Model::shouldBeStrict()` (sin _lazy loading_ silencioso), `CarbonImmutable` en toda la app y `declare(strict_types=1)` en cada archivo.
 </details>
 
-## 📁 Estructura
+##  Estructura
 
 ```
 app/
@@ -185,7 +185,7 @@ tests/
 └── Concurrency/      # Doble reserva con procesos reales
 ```
 
-## 🚀 Cómo correrlo
+##  Cómo correrlo
 
 ### Opción A · Local (PHP 8.3+, Composer, Node 20+, MySQL 8)
 
@@ -228,7 +228,7 @@ El seeder crea 3 negocios con 30 días de historial y 2 semanas de agenda:
 
 La contraseña de todos los usuarios de demo es `password` (**solo datos de prueba**, nunca en producción).
 
-## 🧪 Tests
+##  Tests
 
 ```bash
 php artisan test                       # todo (requiere la base turnero_test)
@@ -243,7 +243,7 @@ npx tsc --noEmit && npm run lint && npm run build
 - Casos destacados: aislamiento entre negocios (lecturas, escrituras, jobs encolados y binding de rutas), DST, buffers y cortes, retención vencida + pago tardío, firma inválida / vencida / reenviada, idempotencia del webhook, link de cancelación vencido, recordatorios sin duplicar, abilities de tokens y **doble reserva concurrente con 8 procesos**.
 - CI corre Pint, Larastan, Pest en PHP 8.3 y 8.4 con MySQL 8.4 (cobertura con pcov) y el build del frontend.
 
-## 🔐 Variables de entorno
+##  Variables de entorno
 
 | Variable                     | Descripción                                                                   |
 | ---------------------------- | ----------------------------------------------------------------------------- |
@@ -294,7 +294,7 @@ curl -s "http://localhost:8000/api/v1/public/businesses/barberia-el-tano/availab
 ```
 </details>
 
-## 🖼️ Capturas
+##  Capturas
 
 | Landing | Checkout del proveedor (sandbox) |
 | --- | --- |
@@ -312,13 +312,13 @@ curl -s "http://localhost:8000/api/v1/public/businesses/barberia-el-tano/availab
 
 <p align="center"><img src="docs/screenshots/mobile-booking.png" alt="Reserva desde el celular" width="300"></p>
 
-## 🗺️ Próximos pasos
+##  Próximos pasos
 
 - Integración real con Mercado Pago (la interfaz `PaymentGateway` ya separa el proveedor).
 - Recordatorios por WhatsApp (canal de notificación adicional).
 - Turnos recurrentes y clases grupales con cupo.
 - Lista de espera que avise cuando se libera un horario.
 
-## 📄 Licencia
+##  Licencia
 
 [MIT](LICENSE) © Matías Acosta
